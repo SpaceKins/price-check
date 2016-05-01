@@ -6,7 +6,9 @@
  * @return {[Products]]} The Uber products available at the queried location
  */
 
- getProductsByLocation(21.3069,-157.8583);
+var productsByLocation=getProductsByLocation('21.3069','-157.8583');
+
+setHTML(productsByLocation);
 
 function getProductsByLocation (lat, lng) {
   var location = {
@@ -14,6 +16,44 @@ function getProductsByLocation (lat, lng) {
   };
   var products = getProducts(location);
   return products;
+}
+
+function setHTML(thisProductsByLocation)
+{
+
+ var theseProducts=thisProductsByLocation['responseJSON'];
+
+var allProducts=theseProducts['products'];  var productCount=allProducts.length;
+  
+
+  var thisBody=document.getElementsByTagName('body')[0];
+
+  for(var i=0;i<productCount;i++)
+  {
+    newDiv=document.createElement('div');
+    newDiv.appendChild(createItem('span',allProducts[i]['description']));
+    newDiv.appendChild(createItem('span',allProducts[i]['display_name']));
+    newDiv.appendChild(createItem('span',allProducts[i]['price_details']['cost_per_distance']));
+
+
+    //thisBody.appendChild(createItem(allProducts[i]));
+
+    thisBody.appendChild(newDiv);
+  }
+
+  
+}
+
+
+function createItem(elementType,elementText)
+{
+ // console.log(thisProduct);
+
+  var thisItemElement=document.createElement(elementType);
+  var thisTextNode=document.createTextNode(elementText);
+  thisItemElement.appendChild(thisTextNode);
+  
+  return thisItemElement;
 }
 
 /**
